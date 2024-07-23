@@ -22,10 +22,15 @@ This project showcases an AI Research Assistant that interacts with users throug
     │       ├── Startup.cs
     │       └── ...
     ├── frontend
-    │   ├── Dockerfile
-    │   ├── Program.cs
-    │   ├── Startup.cs
-    │   └── ...
+    │   └── BlazorFrontend
+    │       ├── BlazorFrontend
+    │       │   ├── Dockerfile
+    │       │   ├── Program.cs
+    │       │   └── ...
+    │       └── BlazorFrontend.Client
+    │           ├── Dockerfile
+    │           ├── Program.cs
+    │           └── ...
     ├── python-service
     │   ├── Dockerfile
     │   ├── main.py
@@ -33,7 +38,6 @@ This project showcases an AI Research Assistant that interacts with users throug
     │   └── ...
     ├── docker-compose.yml
     └── README.md
-
 ## Getting Started
 
 ### Prerequisites
