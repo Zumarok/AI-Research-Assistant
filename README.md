@@ -7,7 +7,7 @@ This project showcases an AI Research Assistant that interacts with users throug
 ## Technologies Used
 
 - **Frontend**: Blazor
-- **Backend**: .NET 8.0 with AutoGen for .NET, Microsoft Semantic Kernel
+- **Backend**: ASP.NET 8.0 with AutoGen for .NET, Microsoft Semantic Kernel
 - **AI Integration**: Python with FastAPI and Transformers, LM Studio with Llama-3-Groq-8B-Tool-Use-GGUF model
 - **Containerization**: Docker
 - **CI/CD**: GitHub Actions
@@ -40,18 +40,18 @@ This project showcases an AI Research Assistant that interacts with users throug
 - Docker
 - Docker Compose
 - LM Studio (running locally)
-- .NET 8.0 SDK
+- ASP.NET 8.0 SDK
 
 ### Cloning the Repository
 
-git clone https://github.com/your-username/ai-research-assistant.git
-cd ai-research-assistant
+    git clone https://github.com/your-username/ai-research-assistant.git
+    cd ai-research-assistant
 
 ## Running the Application
 
 ### Use Docker Compose to build and run the application:
 
-docker-compose up --build
+    docker-compose up --build
 
 Ensure that LM Studio is running locally with the following configuration:
 
@@ -69,9 +69,14 @@ This command will build the Docker images and start the containers. The services
 
 The frontend is built with Blazor, providing a responsive and interactive chat interface for users to interact with the AI Research Assistant.
 
-## Backend
+## Backend (AIResearchService)
 
 The backend is developed with .NET 8.0, using AutoGen for .NET to orchestrate multiple AI agents and Microsoft Semantic Kernel to manage and query the research data.
+- Framework: ASP.NET 8.0
+- Dockerfile:
+    - Exposes ports 8080 and 8081.
+    - Runs the service using dotnet AIResearchService.dll.
+    - Uses the mcr.microsoft.com/dotnet/aspnet:8.0 and mcr.microsoft.com/dotnet/sdk:8.0 base images for runtime and build stages, respectively.
 
 ## Python Service
 
@@ -85,9 +90,9 @@ The LLM (Large Language Model) is run locally using LM Studio with the Llama-3-G
 
 The project uses GitHub Actions for Continuous Integration and Continuous Deployment (CI/CD). On every push to the main branch, the pipeline:
 
-    Builds the Docker images for each component.
-    Pushes the images to Docker Hub.
-    Deploys the services using Docker Compose.
+- Builds the Docker images for each component.
+- Pushes the images to Docker Hub.
+- Deploys the services using Docker Compose.
 
 ### License
 

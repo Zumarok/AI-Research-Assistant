@@ -1,0 +1,6 @@
+@AIResearchService_HostAddress = http://localhost:5239
+
+GET {{AIResearchService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
