@@ -16,20 +16,21 @@ This project showcases an AI Research Assistant that interacts with users throug
 
     .
     ├── backend
-    │ ├── Dockerfile
-    │ ├── Program.cs
-    │ ├── Startup.cs
-    │ └── ...
+    │   └── AIResearchService
+    │       ├── Dockerfile
+    │       ├── Program.cs
+    │       ├── Startup.cs
+    │       └── ...
     ├── frontend
-    │ ├── Dockerfile
-    │ ├── Program.cs
-    │ ├── Startup.cs
-    │ └── ...
+    │   ├── Dockerfile
+    │   ├── Program.cs
+    │   ├── Startup.cs
+    │   └── ...
     ├── python-service
-    │ ├── Dockerfile
-    │ ├── main.py
-    │ ├── requirements.txt
-    │ └── ...
+    │   ├── Dockerfile
+    │   ├── main.py
+    │   ├── requirements.txt
+    │   └── ...
     ├── docker-compose.yml
     └── README.md
 
@@ -40,11 +41,11 @@ This project showcases an AI Research Assistant that interacts with users throug
 - Docker
 - Docker Compose
 - LM Studio (running locally)
-- ASP.NET 8.0 SDK
+- .NET 8.0 SDK
 
 ### Cloning the Repository
 
-    git clone https://github.com/your-username/ai-research-assistant.git
+    git clone https://github.com/Zumarok/AI-Research-Assistant.git
     cd ai-research-assistant
 
 ## Running the Application
