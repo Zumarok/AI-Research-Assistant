@@ -14,24 +14,24 @@ This project showcases an AI Research Assistant that interacts with users throug
 
 ## Project Structure
 
-.
-├── backend
-│ ├── Dockerfile
-│ ├── Program.cs
-│ ├── Startup.cs
-│ └── ...
-├── frontend
-│ ├── Dockerfile
-│ ├── Program.cs
-│ ├── Startup.cs
-│ └── ...
-├── python-service
-│ ├── Dockerfile
-│ ├── main.py
-│ ├── requirements.txt
-│ └── ...
-├── docker-compose.yml
-└── README.md
+    .
+    ├── backend
+    │ ├── Dockerfile
+    │ ├── Program.cs
+    │ ├── Startup.cs
+    │ └── ...
+    ├── frontend
+    │ ├── Dockerfile
+    │ ├── Program.cs
+    │ ├── Startup.cs
+    │ └── ...
+    ├── python-service
+    │ ├── Dockerfile
+    │ ├── main.py
+    │ ├── requirements.txt
+    │ └── ...
+    ├── docker-compose.yml
+    └── README.md
 
 ## Getting Started
 
