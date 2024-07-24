@@ -1,26 +1,22 @@
-version: '3.4'
-
 services:
   ai-research-service:
     build:
       context: ./backend/AIResearchService
       dockerfile: Dockerfile
     ports:
-      - "5000:80"  # Assuming AIResearchService runs on port 80 inside the container
+      - "5000:5000"
+      - "5001:5001"
+    networks:
+      - ai-research-network
 
   blazor-frontend:
     build:
-      context: ./frontend/BlazorFrontend/BlazorFrontend
+      context: ./frontend/BlazorFrontend
       dockerfile: Dockerfile
     ports:
-      - "8082:80"  # Serve the Blazor WASM app
-
-  blazor-frontend-client:
-    build:
-      context: ./frontend/BlazorFrontend/BlazorFrontend.Client
-      dockerfile: Dockerfile
-    ports:
-      - "8083:80"  # Serve the Blazor WASM client
+      - "80:80"
+    networks:
+      - ai-research-network
 
   python-service:
     build:
@@ -28,3 +24,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+    networks:
+      - ai-research-network
+
+networks:
+  ai-research-network:
+    driver: bridge

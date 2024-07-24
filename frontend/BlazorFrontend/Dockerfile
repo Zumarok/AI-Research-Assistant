@@ -2,13 +2,14 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy the .csproj file and restore the dependencies
-COPY BlazorFrontend/BlazorFrontend/BlazorFrontend.csproj BlazorFrontend/
+# Copy the .csproj files and restore the dependencies
+COPY ["BlazorFrontend/BlazorFrontend.csproj", "BlazorFrontend/"]
+COPY ["BlazorFrontend.Client/BlazorFrontend.Client.csproj", "BlazorFrontend.Client/"]
 RUN dotnet restore "BlazorFrontend/BlazorFrontend.csproj"
 
 # Copy the rest of the application files and build the application
 COPY . .
-WORKDIR /src/BlazorFrontend/BlazorFrontend
+WORKDIR "/src/BlazorFrontend"
 RUN dotnet publish -c Release -o /app/publish
 
 # Use the official .NET runtime image to run the application
