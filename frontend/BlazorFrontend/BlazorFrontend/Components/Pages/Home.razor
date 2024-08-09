@@ -1,7 +1,150 @@
 ﻿@page "/"
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Text.Json 
 
-<PageTitle>Home</PageTitle>
+<div class="d-flex" style="width: 100%;">
+    <div class="border rounded p-2" style="height: 400px; overflow-y: auto; width: 65%; display: flex; flex-direction: column; margin-right: 10px;">
+        <h3>Chat</h3>
+        <div @ref="chatWindow" style="flex-grow: 1;">
+            @foreach (var message in messages)
+            {
+                <div class="mb-2 message @message.User.ToLower()">
+                    <strong>@message.User:</strong> @((MarkupString)message.Content) <!-- Use MarkupString to render HTML -->
+                </div>
+            }
+        </div>
+    </div>
+    <div class="border rounded p-2" style="height: 400px; overflow-y: auto; width: 40%; margin-left: 5px; display: flex; flex-direction: column;">
+        <h3>Articles</h3>
+        <ul class="list-unstyled" style="flex-grow: 1;">
+            @foreach (var item in searchRepository.Select((value, index) => new { value, index }))
+            {
+                <li @onclick="() => GetContent(item.index)" class="search-item">@item.value</li>
+            }
+        </ul>
+    </div>
+</div>
+<div class="input-group mt-2" style="width: 61%;"> <!-- Set width to match chat window -->
+    <input type="text" class="form-control" @bind="userMessage" placeholder="Type a message..." @onkeydown="HandleKeyPress" />
+    <div class="input-group-append" style="margin-left: 5px;">
+        <button class="btn btn-primary" @onclick="SendMessage">Send</button>
+    </div>
+</div>
 
-<h1>Hello, world!</h1>
+@code 
+{
+    private List<ChatMessage> messages = new List<ChatMessage>();
+    private List<string> searchRepository = new List<string>();
+    private ElementReference chatWindow;
+    private string userMessage;
 
-Welcome to your new app.
+
+    protected override async Task OnInitializedAsync()
+    {	    	    
+        await Reset();
+        await StartChat();
+        await FetchRepository(); // Fetch repository data on initialization
+    }
+
+    private async Task StartChat()
+    {
+        var response = await Http.GetStringAsync("/api/AI/start");
+        if (response != null)
+        {
+            messages.Add(new ChatMessage(){User = "AI", Content = response});            
+        }
+    }
+
+    private async Task GetContent(int index)
+    {
+        var contentMessage = $"Please get the content for index {index}.";
+        messages.Add(new ChatMessage { User = "User", Content = contentMessage });
+        await ScrollToBottom(); // Scroll to the bottom after sending
+
+        var response = await Http.PostAsJsonAsync("/api/AI/content", contentMessage);
+        
+        // Read the response as a plain text string
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        // Replace newline characters with HTML line breaks
+        responseContent = responseContent.Replace("\n", "<br />"); // Handle newlines
+
+        // Assuming the response is a plain text message
+        if (!string.IsNullOrEmpty(responseContent))
+        {
+            var aiResponse = new ChatMessage { User = "AI", Content = responseContent };
+            messages.Add(aiResponse);
+        }
+
+        await ScrollToBottom(); // Scroll to the bottom after sending
+    }
+    private async Task SendMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(userMessage))
+        {
+            messages.Add(new ChatMessage { User = "User", Content = userMessage });
+            var m = userMessage;
+            userMessage = string.Empty; // Clear the input field
+
+            await Task.Delay(1);
+
+            await ScrollToBottom(); // Scroll to the bottom after sending
+            
+            // Send userMessage directly as a string
+            var response = await Http.PostAsJsonAsync("/api/AI/chat", m);         
+
+            // Read the response as a plain text string
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            // Replace newline characters with HTML line breaks
+            responseContent = responseContent.Replace("\n", "<br />"); // Handle newlines
+
+            // Assuming the response is a plain text message
+            if (!string.IsNullOrEmpty(responseContent))
+            {
+                var aiResponse = new ChatMessage { User = "AI", Content = responseContent };
+                messages.Add(aiResponse);
+            }
+
+            await ScrollToBottom(); // Scroll to the bottom after sending
+            await FetchRepository();
+        }
+    }
+
+    private async Task ScrollToBottom()
+    {
+        if (await JSRuntime.InvokeAsync<bool>("isBrowser"))
+        {
+            await JSRuntime.InvokeVoidAsync("scrollToBottom", chatWindow);
+        }
+    }
+
+    private async Task FetchRepository()
+    {
+        var response = await Http.GetStringAsync("/api/AI/repo");
+        if (!string.IsNullOrEmpty(response))
+        {
+            searchRepository = JsonSerializer.Deserialize<List<string>>(response); // Deserialize JSON response
+        }
+    }
+
+    private async Task Reset()
+    {
+        var response = await Http.GetAsync("api/AI/reset");        
+    }   
+
+    private async Task HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await SendMessage();
+        }
+    }
+
+    public class ChatMessage
+    {
+        public string User { get; set; }
+        public string Content { get; set; }
+    }
+}

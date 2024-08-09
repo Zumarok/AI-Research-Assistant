@@ -1,5 +1,5 @@
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Poppins', sans-serif; /* Apply Poppins font to the entire app */
 }
 
 a, .btn-link {
@@ -48,4 +48,86 @@ h1:focus {
 
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
+}
+
+.chat-container {
+    height: 400px; /* Set a fixed height for the chat window */
+    border: 1px solid #ccc; /* Optional: Add a border */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 10px; /* Optional: Add some padding */
+    background-color: #f9f9f9; /* Optional: Background color */
+    scrollbar-width: thin; /* For Firefox: make scrollbar thin */
+}
+
+/* For WebKit browsers (Chrome, Safari) */
+.chat-container::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color of the scrollbar thumb */
+    border-radius: 4px; /* Rounded corners for the scrollbar thumb */
+}
+
+.chat-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Darker color on hover */
+}
+
+
+.chat-window {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.chat-message {
+    margin-bottom: 20px;
+}
+
+.chat-input {
+    display: flex;
+    margin-top: 10px;
+}
+
+.chat-input input {
+    flex-grow: 1;
+    padding: 5px;
+}
+
+.chat-input button {
+    margin-left: 10px;
+}
+
+.articles-container {
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Hide horizontal scrolling */
+}
+
+.search-item {
+    height: 8%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition: transform 0.2s;
+    padding: 5px; /* Adjust padding for smaller vertical size */
+    font-size: 12.5px; /* Set font size to make it smaller */
+    cursor: pointer; /* Change cursor to pointer for better UX */
+}
+.search-item:hover {
+    transform: scale(1.07); /* Grow on hover */
+    background-color: #e9ecef; /* Optional: Add a hover effect */
+}
+
+.message {
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+.user {
+    background-color: #e2e2ec; /* Light grey for user messages */
+    width: 75%; /* Set width to 75% */
+    margin-left: auto; /* Align to the right */
+    text-align: left; /* Align text to the right */
+}
+.ai {
+    background-color: #d1cfcf; /* Dark grey for AI messages */
 }

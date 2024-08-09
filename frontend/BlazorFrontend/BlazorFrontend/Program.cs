@@ -8,9 +8,14 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        
+        // Register HttpClient
+        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.WebHost.GetSetting("baseUrl")) });
+
         // Add services to the container.
         builder.Services.AddRazorComponents()
-            .AddInteractiveWebAssemblyComponents();
+            .AddInteractiveWebAssemblyComponents()
+            .AddInteractiveServerComponents();
 
         var app = builder.Build();
 
@@ -25,16 +30,21 @@ public class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+       
+        app.UseHttpsRedirection(); // Existing line
 
-        app.UseHttpsRedirection();
+        app.UseStaticFiles(); // Ensure this is only called once
 
-        app.UseStaticFiles();
-        app.UseAntiforgery();
+        app.UseRouting(); // Existing line
 
-        app.MapRazorComponents<App>()
-            .AddInteractiveWebAssemblyRenderMode()
-            .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
+        app.UseAntiforgery(); // Existing line
 
+        app.UseEndpoints(endpoints =>
+        {
+            // Ensure no duplicate mappings here
+            endpoints.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+            // Remove any duplicate or conflicting endpoint mappings
+        });
         app.Run();
     }
 }
